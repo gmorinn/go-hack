@@ -1,46 +1,51 @@
 package main
 
 import (
+	"fmt"
 	"os"
-	"strings"
+	"os/exec"
 )
 
 type Methods string
 
 const (
-	GET    Methods = "GET"
-	POST           = "POST"
-	PATCH          = "PATCH"
-	PUT            = "PUT"
-	DELETE         = "DELETE"
+	POST Methods = "POST"
+	// GET         = "GET"
+	// PATCH          = "PATCH"
+	// PUT            = "PUT"
+	// DELETE         = "DELETE"
 )
 
 var (
 	_concurrencyLevel int64 = 3
 	_limit            int64 = -1
 	_wordlistFile     string
+	_generalPayload   string
 	_url              string
 	_payload          string
+	_not              bool = false
 	_method           Methods
-	_response         []string
+	_response         string
 )
 
 func manageBrutForce() {
 	switch _method {
-	case GET:
-		brutForceGET()
-		break
 	case POST:
 		brutForcePOST()
 		break
-	case PUT:
-		brutForcePUT()
-		break
-	case DELETE:
-		brutForceDELETE()
-		break
-	case PATCH:
-		brutForceGET()
+	// case GET:
+	// 	brutForceGET()
+	// 	break
+	// case PUT:
+	// 	brutForcePUT()
+	// 	break
+	// case DELETE:
+	// 	brutForceDELETE()
+	// 	break
+	// case PATCH:
+	// 	brutForcePATCH()
+	// 	break
+	default:
 		break
 	}
 }
@@ -57,6 +62,10 @@ func manageError() {
 	}
 	if _limit == -1 && len(_response) == 0 {
 		exitError("Not limit or response specified")
+	}
+	_, err := exec.Command("ping", "192.168.0.111", "-c 5", "-i 3", "-w 10").Output()
+	if err != nil {
+		exitError(fmt.Sprintf("ping %s doesn't work", _url))
 	}
 }
 
@@ -78,10 +87,13 @@ func manageArgs(args []string) {
 			setPayload(args[i+1])
 		}
 		if (v == "-r" || v == "--response") && (i+1) < len(args) {
-			setResponse(strings.Split(args[i+1], ","))
+			setResponse(args[i+1])
 		}
 		if (v == "-l" || v == "--limit") && (i+1) < len(args) {
 			setLimit(args[i+1])
+		}
+		if v == "-n" || v == "--not" {
+			setNot(true)
 		}
 	}
 	manageError()

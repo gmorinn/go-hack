@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2022
-## groundhog
+## GO GM
 ## File description:
 ## Makefile
 ##

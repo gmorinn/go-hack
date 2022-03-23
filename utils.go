@@ -15,18 +15,21 @@ func help() {
 
 	fmt.Println("\nDESCRIPTION")
 	fmt.Println("\tA perfect tool for hacking in Go")
-	fmt.Println("\n\t-u, --url\t{URL_API} Url of the API")
-	fmt.Println("\t-t, --threads\t{THREADS} Number of concurrent threads (default=3)")
-	fmt.Println("\t-w, --wordlist\t{WORDLIST} Path to the wordlist")
-	fmt.Println("\t-m, --method\t{METHOD} Method of the request (GET, POST, PUT, DELETE, PATCH) default=GET")
-	fmt.Println("\t-p, --payload\t{PAYLOAD} The attribute you want to modify. Example: -p email -w email.txt")
-	fmt.Println("\t-l, --limit\t{LIMIT} Stop the program when the number of request equals ${limit}")
-	fmt.Println("\t-r, --response\t{RESPONSE} Corresponds to the attributes returned by the API. If one of these attributes is returned, then the program stops. Example: -r \"success,access_token,refresh_token\"")
+	fmt.Println("\n\t-u, --url\t\t\t{URL_API} Url of the API")
+	fmt.Println("\t-t, --threads\t\t\t{THREADS} Number of concurrent threads (default=3)")
+	fmt.Println("\t-w, --wordlist\t\t\t{WORDLIST} Path to the wordlist")
+	fmt.Println("\t-m, --method\t\t\t{METHOD} Method of the request. Default=POST")
+	fmt.Println("\t-p, --payload\t\t\t{PAYLOAD} The attribute you want to modify. Example: -p email -w email.txt")
+	fmt.Println("\t-l, --limit\t\t\t{LIMIT} Stop the program when the number of request equals ${limit}")
+	fmt.Println("\t-gp, --general-payload\t\t{GENERAL_PAYLOAD} The payload that does not change with each request. Exemple: -gp \"{\"email\":\"guillaume@test.com\"}\"")
+	fmt.Println("\t-r, --response\t\t\t{RESPONSE} Corresponds to the response or message returned by the API. If the response of the request contains the response specified then the program stops. Example: -r \"{\"success\":\"true\"}\"")
+	fmt.Println("\t-n, --not\t\t\t{NOT} Stop the program when the request send a response different of the -r specified. Exemple: -r \"INVALD API KEY\" -n => The program stop when the response is different that \"INVALID API KEY\"")
 
 	fmt.Println("\nNOTICE !")
 	fmt.Println("\t- Only one url is taken into account.")
 	fmt.Println("\t- Only one attribute is possible in the payload for version 1.")
 	fmt.Println("\t- All flags are not mandatory, except -u && -w && (-r || -l)")
+	fmt.Println("\t- You can stop the program at any moment with CRTL + C")
 
 }
 

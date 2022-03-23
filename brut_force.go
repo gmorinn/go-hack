@@ -12,12 +12,14 @@ import (
 )
 
 func checkResponse(res string) bool {
-	for _, v := range _response {
-		if strings.Contains(res, v) {
-			return true
-		}
+	var ret bool = false
+	if strings.Contains(res, _response) {
+		ret = true
 	}
-	return false
+	if _not {
+		return !ret
+	}
+	return ret
 }
 
 func brutForcePOST() {
@@ -42,7 +44,11 @@ func brutForcePOST() {
 			}
 
 			// set payload and request
-			payload := []byte(fmt.Sprintf("{\"%s\":\"%s\"}", _payload, value))
+			var stringPayload string = fmt.Sprintf("{\"%s\":\"%s\"}", _payload, value)
+			if _generalPayload != "" {
+				stringPayload = fmt.Sprintf("{\"%s\":\"%s\", %s}", _payload, value, _generalPayload)
+			}
+			payload := []byte(stringPayload)
 			buffer := bytes.NewBuffer(payload)
 			resp, err := http.Post(_url, "application/json", buffer)
 			if err != nil {
