@@ -21,8 +21,8 @@ func help() {
 	fmt.Println("\t-m, --method\t\t\t{METHOD} Method of the request. Default=POST")
 	fmt.Println("\t-p, --payload\t\t\t{PAYLOAD} The attribute you want to modify. Example: -p email -w email.txt")
 	fmt.Println("\t-l, --limit\t\t\t{LIMIT} Stop the program when the number of request equals ${limit}")
-	fmt.Println("\t-gp, --general-payload\t\t{GENERAL_PAYLOAD} The payload that does not change with each request. Exemple: -gp \"{\"email\":\"guillaume@test.com\"}\"")
-	fmt.Println("\t-r, --response\t\t\t{RESPONSE} Corresponds to the response or message returned by the API. If the response of the request contains the response specified then the program stops. Example: -r \"{\"success\":\"true\"}\"")
+	fmt.Println("\t-gp, --general-payload\t\t{GENERAL_PAYLOAD} The payload that does not change with each request. Exemple: -gp \"{\\\"email\\\":\\\"guillaume@test.com\\\"}\"")
+	fmt.Println("\t-r, --response\t\t\t{RESPONSE} Corresponds to the response or message returned by the API. If the response of the request contains the response specified then the program stops. Example: -r \"{\\\"success\\\":true}\"")
 	fmt.Println("\t-n, --not\t\t\t{NOT} Stop the program when the request send a response different of the -r specified. Exemple: -r \"INVALD API KEY\" -n => The program stop when the response is different that \"INVALID API KEY\"")
 
 	fmt.Println("\nNOTICE !")

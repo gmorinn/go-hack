@@ -36,8 +36,8 @@ func setResponse(response string) {
 
 // Set response
 func setGeneralPayload(general_payload string) {
-	if general_payload[:1] == "{" && general_payload[:len(general_payload)-1] == "}" && len(general_payload) > 3 {
-		_generalPayload = general_payload[1 : len(general_payload)-2]
+	if general_payload[:1] == "{" && general_payload[len(general_payload)-1:len(general_payload)] == "}" && len(general_payload) > 3 {
+		_generalPayload = general_payload[1 : len(general_payload)-1]
 	} else {
 		exitError("General payload needs to be an object")
 	}

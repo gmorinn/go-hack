@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 type Methods string
@@ -23,8 +23,8 @@ var (
 	_generalPayload   string
 	_url              string
 	_payload          string
-	_not              bool = false
-	_method           Methods
+	_not              bool    = false
+	_method           Methods = "POST"
 	_response         string
 )
 
@@ -63,9 +63,9 @@ func manageError() {
 	if _limit == -1 && len(_response) == 0 {
 		exitError("Not limit or response specified")
 	}
-	_, err := exec.Command("ping", "192.168.0.111", "-c 5", "-i 3", "-w 10").Output()
-	if err != nil {
-		exitError(fmt.Sprintf("ping %s doesn't work", _url))
+	ping, _ := exec.Command("ping", _url, "-c 5", "-i 3", "-w 10").Output()
+	if strings.Contains(string(ping), "Destination Host Unreachable") {
+		exitError("Wrong URL")
 	}
 }
 
@@ -91,6 +91,9 @@ func manageArgs(args []string) {
 		}
 		if (v == "-l" || v == "--limit") && (i+1) < len(args) {
 			setLimit(args[i+1])
+		}
+		if (v == "-gp" || v == "--general-payload") && (i+1) < len(args) {
+			setGeneralPayload(args[i+1])
 		}
 		if v == "-n" || v == "--not" {
 			setNot(true)
