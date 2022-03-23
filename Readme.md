@@ -1,4 +1,4 @@
-# GO GM v3.0
+# GO GM v1.0
 
 GO GM is a tool used to brute-force API's request:
 
@@ -44,7 +44,7 @@ GO GM is a tool used to brute-force API's request:
 
 -  Find the password of a user and when the response contains "{"success":"true"}"
 ```bash
- ./go-gm -u http://10.10.159.167:8081/sign -p password -w password.txt -m POST -r "{"success":"true"}" --general-payload "{\"email\":\"guillaume@test.com\"}"
+ ./go-gm -u http://10.10.159.167:8081/sign -p password -w password.txt -m POST -r "{\"success\":\"true\"}" --general-payload "{\"email\":\"guillaume@test.com\"}"
  ```
 
 
