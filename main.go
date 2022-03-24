@@ -1,10 +1,24 @@
 package main
 
 import (
+	"flag"
 	"os"
 	"os/exec"
 	"strings"
 )
+
+func init() {
+	flag.StringVar(&_url, "u", "", "Url of the API")
+	flag.Int64Var(&_concurrencyLevel, "t", 3, "Number of concurrent threads (default=3)")
+	flag.StringVar(&_wordlistFile, "w", "", "Path to the wordlist")
+	flag.StringVar(&_methodStr, "m", "POST", "Method of the request. Default=POST")
+	flag.StringVar(&_payload, "p", "", "The attribute you want to modify. Example: -p email -w email.txt")
+	flag.Int64Var(&_limit, "l", 0, "Stop the program when the number of request equals ${limit}")
+	flag.StringVar(&_generalPayload, "gp", "", "The payload that does not change with each request. Exemple: -gp \"{\\\"email\\\":\\\"guillaume@test.com\\\"}\"")
+	flag.StringVar(&_response, "r", "", "Corresponds to the response or message returned by the API. If the response of the request contains the response specified then the program stops. Example: -r \"{\\\"success\\\":true}\"")
+	flag.BoolVar(&_not, "n", false, "Stop the program when the request send a response different of the -r specified. Exemple: -r \"INVALD API KEY\" -n => The program stop when the response is different that \"INVALID API KEY\"")
+	flag.Parse()
+}
 
 type Methods string
 
@@ -23,7 +37,8 @@ var (
 	_generalPayload   string
 	_url              string
 	_payload          string
-	_not              bool    = false
+	_not              bool = false
+	_methodStr        string
 	_method           Methods = "POST"
 	_response         string
 )
@@ -52,15 +67,19 @@ func manageBrutForce() {
 
 func manageError() {
 	if _url == "" {
+		help()
 		exitError("Url is empty")
 	}
 	if _concurrencyLevel <= 0 {
+		help()
 		exitError("-t should be greater than 0")
 	}
 	if _wordlistFile == "" {
+		help()
 		exitError("Wordlist is empty")
 	}
 	if _limit == -1 && len(_response) == 0 {
+		help()
 		exitError("Not limit or response specified")
 	}
 	ping, _ := exec.Command("ping", _url, "-c 5", "-i 3", "-w 10").Output()
@@ -70,35 +89,15 @@ func manageError() {
 }
 
 func manageArgs(args []string) {
-	for i, v := range args {
-		if (v == "-t" || v == "--threads") && (i+1) < len(args) {
-			setThread(args[i+1])
-		}
-		if (v == "-w" || v == "--wordlist") && (i+1) < len(args) {
-			setWordlist(args[i+1])
-		}
-		if (v == "-u" || v == "--url") && (i+1) < len(args) {
-			setUrl(args[i+1])
-		}
-		if (v == "-m" || v == "--method") && (i+1) < len(args) {
-			setMethod(Methods(args[i+1]))
-		}
-		if (v == "-p" || v == "--payload") && (i+1) < len(args) {
-			setPayload(args[i+1])
-		}
-		if (v == "-r" || v == "--response") && (i+1) < len(args) {
-			setResponse(args[i+1])
-		}
-		if (v == "-l" || v == "--limit") && (i+1) < len(args) {
-			setLimit(args[i+1])
-		}
-		if (v == "-gp" || v == "--general-payload") && (i+1) < len(args) {
-			setGeneralPayload(args[i+1])
-		}
-		if v == "-n" || v == "--not" {
-			setNot(true)
-		}
+	setMethod(Methods(_methodStr))
+	if _payload != "" {
+		setGeneralPayload(_payload)
 	}
+
+	if _response != "" {
+		setResponse(_response)
+	}
+
 	manageError()
 }
 
