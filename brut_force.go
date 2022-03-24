@@ -38,7 +38,7 @@ func brutForcePOST() {
 			}
 
 			if index >= _limit && _limit > -1 { // check limit
-				fmt.Println("Limit: %d", _limit)
+				fmt.Printf("Limit: %d\n", _limit)
 				log.Printf("Took %s", time.Since(start))
 				os.Exit(0)
 			}
